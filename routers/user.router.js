@@ -1,17 +1,24 @@
 const express = require("express");
 const {
-  createUser,
   getUser,
   deleteUser,
   updateUser,
+  signup,
+  login,
 } = require("../controllers/user.controller");
+
+const { verifyJWTToken } = require("../middleware/auth.middleware");
 
 const router = express.Router();
 
 // user route
-router.post("/", createUser);
-router.get("/", getUser);
-router.delete("/", deleteUser);
-router.put("/", updateUser);
+router.post("/signup", signup);
+router.post("/login", login);
+
+// protected route
+
+router.get("/", verifyJWTToken, getUser);
+router.delete("/", verifyJWTToken, deleteUser);
+router.put("/", verifyJWTToken, updateUser);
 
 module.exports = router;
